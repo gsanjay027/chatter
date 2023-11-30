@@ -1,0 +1,472 @@
+:root {
+    --bg-color: #263238;
+    --fg-color: #236180;
+    --box-color-chat: #37474F;
+    --std-font: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+body {
+    background-image: url('/chatter/img/back.png');
+    background-size: cover;
+}
+
+.center-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-signup {
+    background-color: var(--fg-color);
+    max-width: 600px;
+    width: 75%;
+    padding: 20px;
+    color: white;
+    font-family: var(--std-font);
+    border-radius: 20px;
+}
+
+.login-signup h1 {
+    padding-left: 20px;
+    font-size: 35px;
+}
+
+.login-signup .err-txt {
+    opacity: 0;
+    color: #721c24;
+    text-align: center;
+    border-radius: 5px;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    transition: .3s;
+}
+
+.login-signup .err-txt.show {
+    opacity: 1;
+    cursor: pointer;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    transition: .3s;
+}
+
+.login-signup .form {
+    margin-top: 20px;
+}
+
+.login-signup .form form {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.login-signup .form form .field {
+    margin-bottom: 10px;
+    height: 65px;
+    padding: 0 20px 0 20px;
+}
+
+.login-signup .form form .field label {
+    font-size: larger;
+}
+
+.login-signup .form form .field input {
+    width: 97%;
+    height: 30px;
+    outline: none;
+    border: none;
+    background-color: #00000000;
+    border-bottom: 1px solid white;
+    color: white;
+    margin-top: 5px;
+    padding-left: 13px;
+    font-size: 15px;
+}
+
+.login-signup .form form .field input::placeholder {
+    color: #000;
+}
+
+.login-signup .form form .field input:focus {
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    transition: 0.5s;
+}
+
+.login-signup .form form .field:not([class*="name"]) {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.login-signup .form form .field button {
+    width: 100%;
+    height: 50px;
+    background-color: var(--bg-color);
+    border: none;
+    color: white;
+    margin-top: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.login-signup .account {
+    margin: 20px 0 0 10px;
+    text-align: center;
+}
+
+.login-signup .account .link {
+    padding-left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #f5c6cb;
+}
+
+
+
+:is(.user,.message-box) {
+    background-color: var(--fg-color);
+    max-width: 600px;
+    width: 75%;
+    padding: 20px;
+    color: white;
+    font-family: var(--std-font);
+    border-radius: 8px;
+    box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
+                0 32px 64px -48px rgba(0,0,0,0.5);
+}
+
+:is(.user,.message-box) .info {
+    display: flex;
+}
+
+:is(.user,.message-box) .info .image {
+    object-fit: cover;
+    height: 65px;
+    width: 65px;
+    border: 3px solid var(--bg-color);
+    border-radius: 50%;
+    margin: 8px;
+}
+
+:is(.user,.message-box) .info .profile, .user .info .contact {
+    margin-top: 20px;
+    margin-left: 15px;
+    flex-grow: 4;
+}
+
+:is(.user,.message-box) .info .profile .name {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+:is(.user,.message-box) .info .profile .status, .user .info .profile .message {
+    margin-top: 4px;
+}
+
+.contact .profile .message b{
+    font-weight: 600;
+    color: #fff;
+    font-family: poppins;
+}
+
+.status.Online {
+    color: #00FF00;
+}
+
+.status.Offline, .message {
+    color: #c0c0c0;
+}
+
+:is(.user,.message-box) .info .logout, .user .search .search-btn {
+    cursor: pointer;
+    flex-grow: 1.6;
+    height: 40px;
+    align-self: center;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--bg-color);
+    color: white;
+    transition: box-shadow .2s;
+    font-size: 14px;
+}
+
+:is(.user,.message-box) .info .logout:hover, .user .search .search-btn:hover {
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 1);
+    transition: box-shadow .2s;
+}
+
+:is(.user,.message-box) .info .logout .fas.fa-sign-out {
+    padding-right: 7px;
+}
+
+.user .search {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.user .search .suggest {
+    position: absolute;
+    z-index: -1;
+    top: 132px;
+    padding-left: 20px;
+    font-size: 19px;
+}
+
+.user .search .input {
+    border: none;
+    outline: none;
+    padding-left: 20px;
+    height: 35px;
+    width: calc(100% - 65px);
+    font-size: 15px;
+    border-radius: 10px 0 0 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .3s;
+}
+
+.user .search .input.active {
+    opacity: 1;
+    pointer-events: visible;
+    transition: all .3s;
+}
+
+.user .search .search-btn {
+    margin-left: -3px;
+    width: 42px;
+    height: 38px;
+    border-radius: 0 10px 10px 0;
+}
+
+a.info {
+    text-decoration: none;
+    color: white;
+}
+
+.contact .info .fas.fa-circle {
+    align-self: center;
+    padding-right: 15px;
+    font-size: 10px;
+}
+
+.contact .info .fas.fa-circle.Online {
+    color: #00FF00;
+}
+
+.contact .info .fas.fa-circle.Offline {
+    color: #c0c0c0;
+}
+
+.message-box {
+    max-width: 80%;
+    width: 100%;
+    padding: 0;
+}
+
+.message-box .info .back-btn {
+    text-decoration: none;
+    color: white;
+    align-self: center;
+    padding: 13px 15px;
+    font-size: 25px;
+    border-radius: 50%;
+    margin: 12px;
+    cursor: pointer;
+}
+
+.message-box .info .back-btn:hover {
+    background-color: var(--bg-color);
+}
+
+.message-box .info .image {
+    width: 55px;
+    height: 55px;
+}
+
+.message-box .chat-list {
+    background-color: #BCCFD7;
+    height: 400px;
+    padding-top: 10px;
+    margin-left: 8px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+}
+
+.message-box .chat-list .chat {
+    padding: 10px;
+    height: 30px;
+    display: flex;
+}
+
+.chat {
+    margin: 5 10px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.chat.incomming {
+    flex-direction: row-reverse;
+}
+
+.chat .message {
+    padding: 10px 20px;
+}
+
+.chat.outgoing .message{
+    background-color: var(--bg-color);
+    color: white;
+    border-radius: 20px 20px 0 20px;
+}
+
+.chat.incomming .message {
+    background-color: white;
+    color: black;
+    border-radius: 0 20px 20px 20px;
+}
+
+.chat .chat.outgoing.image-out {
+    padding: 0%;
+}
+
+.chat.outgoing.image-out .message {
+    padding: 0%;
+    margin-top: 20px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.chat .image {
+    margin: 0 10px;
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--bg-color);
+    border-radius: 50%;
+}
+
+.message-box form#sendMsg {
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 0;
+}
+
+.message-box form#sendMsg .message {
+    height: 45px;
+    width: calc(90% - 100px);
+    font-size: 16px;
+    padding: 0 13px;
+    border: 1px solid #e6e6e6;
+    outline: none;
+    border-radius: 5px 0 0 5px;
+    color: black;
+}
+
+.message-box form#sendMsg .submit{
+    color: #fff;
+    width: 55px;
+    height: 50px;
+    border: none;
+    outline: none;
+    background: var(--bg-color);
+    font-size: 19px;
+    opacity: 0.7;   
+    border-radius: 0 5px 5px 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-upload {
+    display: inline-block;
+    position: relative;
+}
+
+.file-label {
+    width: 55px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    background: var(--bg-color);
+    opacity: 0.7;
+    border-radius: 0 5px 5px 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-label i {
+    color: #fff;
+    font-size: 19px;
+}
+
+.images,
+#pdf {
+    color: #fff;
+    width: 55px;
+    height: 50px;
+    border: none;
+    outline: none;
+    background: var(--bg-color);
+    font-size: 19px;
+    opacity: 0.7;
+    border-radius: 0 5px 5px 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.images {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/*.message-box form#sendMsg .submit,
+.images,
+#pdf {
+    color: #fff;
+    width: 55px;
+    height: 50px;
+    border: none;
+    outline: none;
+    background: var(--bg-color);
+    font-size: 19px;
+    opacity: 0.7;
+    border-radius: 0 5px 5px 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    vertical-align: middle; 
+}
+
+.images,
+#pdf {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border-radius: 0;
+    margin: 0;
+    vertical-align: middle;
+}*/
+
+
+/*.message-box form#sendMsg #image-container {
+    position: relative;
+}
+
+.message-box form#sendMsg #image-container .images {
+    /*visibility: hidden;*/
+    /*width: 20px;
+}
+
+.message-box form#sendMsg #image-container .image-icon {
+    position: absolute;
+}*/
+
+.message-box form#sendMsg .submit.active {
+    opacity: 1;
+    pointer-events: visible;
+    transition: all 0.3s ease;
+}
