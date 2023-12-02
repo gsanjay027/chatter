@@ -44,21 +44,17 @@
             <input placeholder="Type your message here..." name="message" class="message" autocomplete="off" required>
             <button type="submit" class="submit" onclick="autoScroll()"><i class="fab fa-telegram-plane"></i></button>
             <div class="file-upload">
-                <input type="file" id="fileInput" class="images" accept="image/*">
+                <input type="file" id="fileInput" onclick="autoScroll()" class="images" accept="image/*">
                 <label for="fileInput" class="file-label">
                     <i class="fa fa-camera image-icon"></i>
                 </label>
             </div>
             <div class="file-upload">
-                <input type="file" id="pdfInput" class="images" accept=".pdf">
+                <input type="file" id="pdfInput" onclick="autoScroll()" class="pdfType" accept=".pdf">
                 <label for="pdfInput" class="file-label">
-                    <i class="fa fa-file"></i>
+                    <i class="fa fa-file-circle-plus"></i>
                 </label>
             </div>
-
-            <!-- <input type="file" class="images" id="fileInput" accept="image/*"> -->
-            <!-- <i class="fa fa-camera image-icon"></i> -->
-            <!-- <button type="button" ><i class="fa fa-camera"></i></button> -->
         </form>
     </section>
 

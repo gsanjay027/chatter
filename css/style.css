@@ -133,6 +133,8 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
                 0 32px 64px -48px rgba(0,0,0,0.5);
+     /* New line Added */
+    max-height: 600px;
 }
 
 :is(.user,.message-box) .info {
@@ -163,7 +165,13 @@ body {
     margin-top: 4px;
 }
 
-.contact .profile .message b{
+ /* New line Added */
+.contact {
+    max-height: 440px;
+    overflow-y: scroll;
+}
+
+.contact .profile .message b {
     font-weight: 600;
     color: #fff;
     font-family: poppins;
@@ -309,11 +317,16 @@ a.info {
     flex-direction: row-reverse;
 }
 
+:is(.chat.incomming.image-in, .chat.outgoing.image-out) {
+    padding: 0px 10px;
+    height: auto;
+}
+
 .chat .message {
     padding: 10px 20px;
 }
 
-.chat.outgoing .message{
+.chat.outgoing .message {
     background-color: var(--bg-color);
     color: white;
     border-radius: 20px 20px 0 20px;
@@ -325,15 +338,28 @@ a.info {
     border-radius: 0 20px 20px 20px;
 }
 
-.chat .chat.outgoing.image-out {
+/* not required */
+/* .chat .chat.outgoing.image-out {
     padding: 0%;
+} */
+
+/* totally modified */
+:is(.chat.outgoing.image-out, .chat.incomming.image-in) .message {
+    padding: 0%;
+    margin-top: 2px;
+    cursor: pointer;
+    border-radius: 20px;
 }
 
-.chat.outgoing.image-out .message {
-    padding: 0%;
-    margin-top: 20px;
-    justify-content: flex-end;
-    align-items: center;
+:is(.chat.outgoing.pdf-out, .chat.incomming.pdf-in) .message {
+    padding: 10px 20px;
+    margin-top: 30px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.message.pdf {
+    font-size: large;
 }
 
 .chat .image {
@@ -401,7 +427,7 @@ a.info {
 }
 
 .images,
-#pdf {
+.pdfType {
     color: #fff;
     width: 55px;
     height: 50px;
@@ -415,7 +441,7 @@ a.info {
     cursor: pointer;
 }
 
-.images {
+.images, .pdfType {
     width: 0;
     height: 0;
     opacity: 0;

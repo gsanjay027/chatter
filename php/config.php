@@ -243,12 +243,12 @@
                 $view = $row['status'];
                 if($row['outgoing_msg_id'] == $outgoing_id)
                 {
-                    $you = "";
+                    $you = "Message Sent";
                     $flg = 1;
                 }
                 else
-                    $you ="";
-                return $view == "False" && $flg == 0 ? "<b>New messages</b>" : $you."Message Sent";
+                    $you ="Received";
+                return $view == "False" && $flg == 0 ? "<b>New messages</b>" : $you;
             } else {
                 return false;
             }
@@ -288,7 +288,7 @@
                 return false;
         }
 
-        function insertChat($outgoing_id, $incomming_id, $message)
+        function insertChat($outgoing_id, $incomming_id, $message, $type)
         {
             $iv = openssl_random_pseudo_bytes(16);
             $enc_message = $this->str_openssl_enc($message, $iv);
@@ -305,9 +305,9 @@
 
             $con2->insertChat($outgoing_id, $incomming_id, $h2);
 
-            $qry = "INSERT INTO `messages` (outgoing_msg_id, incomming_msg_id, msg, iv) VALUES (?, ?, ?, ?)";
+            $qry = "INSERT INTO `messages` (outgoing_msg_id, incomming_msg_id, msg, iv, type) VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->con->prepare($qry);
-            $stmt->bind_param("ssss", $outgoing_id, $incomming_id, $h1, $iv_hex);
+            $stmt->bind_param("sssss", $outgoing_id, $incomming_id, $h1, $iv_hex, $type);
             $stmt->execute();
 
             $numrows = $stmt->affected_rows;
@@ -321,7 +321,7 @@
 
         function getChat($outgoing_id, $incomming_id)
         {
-            $qry = "SELECT `msg`, `iv`, `incomming_msg_id`, `outgoing_msg_id` FROM `messages` WHERE (incomming_msg_id = ? OR outgoing_msg_id = ?) AND (incomming_msg_id = ? OR outgoing_msg_id = ?) ORDER BY `msg_id`";
+            $qry = "SELECT `msg`, `iv`, `incomming_msg_id`, `outgoing_msg_id`, `type` FROM `messages` WHERE (incomming_msg_id = ? OR outgoing_msg_id = ?) AND (incomming_msg_id = ? OR outgoing_msg_id = ?) ORDER BY `msg_id`";
             $stmt = $this->con->prepare($qry);
             $stmt->bind_param("ssss", $incomming_id, $incomming_id, $outgoing_id, $outgoing_id);
             $stmt->execute();

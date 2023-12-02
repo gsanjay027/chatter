@@ -24,6 +24,7 @@
                 {
                     //$chat = $con->str_openssl_dec($msg['msg'], hex2bin($msg['iv']));
                     $chat = $msg['msg'];
+                    $type = $msg['type'];
                     $iv = $msg['iv'];
                     if($outgoing_id == $msg['outgoing_msg_id'])
                     {
@@ -39,6 +40,7 @@
                             $ch1[$i] = $chat;
                             $fg[$i] = $flg;
                             $init[$i] = $iv;
+                            $types[$i] = $type;
                         }
                         $count++;
                     }
@@ -56,6 +58,7 @@
                             $ch1[$i] = $chat;
                             $fg[$i] = $flg;
                             $init[$i] = $iv;
+                            $types[$i] = $type;
                         }
                         $count++;
                     }
@@ -109,30 +112,67 @@
                 if($fg[$i] == 1)
                 {
                     $img = $con->getProfileImage($outgoing_id);
-                    $chatr .= '
-                        <div class="chat outgoing">
-                            <p class="message">'.$con->str_openssl_dec($ch1[$i].$ch2[$i], hex2bin($init[$i])).'</p>
-                            <img src="php/images/'.$img.'" alt="Profile Image" class="image">
-                        </div>
-                        <!--<div class="chat outgoing image-out">
-                            <img height="250%" width="30%" src="/chatter/img/back.png" alt="Received Image" class="message">
-                            <img src="php/images/'.$img.'" alt="Profile Image" class="image">
-                        </div>-->
-                    ';  
+                    if($types[$i] == "text"){
+                        $chatr .= '
+                                <div class="chat outgoing">
+                                    <p class="message">'.$con->str_openssl_dec($ch1[$i].$ch2[$i], hex2bin($init[$i])).'</p>
+                                    <img src="php/images/'.$img.'" alt="Profile Image" class="image">
+                                </div>'; 
+                    }
+
+                    if($types[$i] == "image"){
+                        $chatr .= '
+                            <div class="chat outgoing image-out">
+                                <img height="250%" width="30%" src="'.$con->str_openssl_dec($ch1[$i].$ch2[$i], hex2bin($init[$i])).'" alt="Received Image" class="message">
+                                <img src="php/images/'.$img.'" alt="Profile Image" class="image">
+                            </div>
+                        '; 
+                    }
+
+                    if($types[$i] == "pdf"){
+                        $chatr .= '
+                            <div class="chat outgoing pdf-out">
+                                <p class="message pdf">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                    <b>PDF</b>
+                                    <input type="hidden" value="'.$con->str_openssl_dec($ch1[$i].$ch2[$i], hex2bin($init[$i])).'">
+                                </p>
+                                <img src="php/images/'.$img.'" alt="Profile Image" class="image">
+                            </div>
+                        ';
+                    }
                 }
                 else if($fg[$i] == 0)
                 {
                     $img = $con->getProfileImage($incomming_id);
-                    $chatr .= '
-                        <div class="chat incomming">
-                            <p class="message">'.$con->str_openssl_dec($ch1[$i].$ch2[$i], hex2bin($init[$i])).'</p>
-                            <img src="php/images/'.$img.'" alt="Profile Image" class="image">
-                        </div>
-                        <!--<div class="chat outgoing image-in">
-                            <img height="250%" width="30%" src="/chatter/img/back.png" alt="Received Image" class="message">
-                            <img src="php/images/'.$img.'" alt="Profile Image" class="image">
-                        </div>-->
-                    ';   
+                    if($types[$i] == "text"){
+                        $chatr .= '
+                            <div class="chat incomming">
+                                <p class="message">'.$con->str_openssl_dec($ch1[$i].$ch2[$i], hex2bin($init[$i])).'</p>
+                                <img src="php/images/'.$img.'" alt="Profile Image" class="image">
+                            </div>
+                        ';
+                    }
+                    if($types[$i] == "image"){
+                        $chatr .= '
+                            <div class="chat incomming image-in">
+                                <img height="250%" width="30%" src="'.$con->str_openssl_dec($ch1[$i].$ch2[$i], hex2bin($init[$i])).'" alt="Received Image" class="message">
+                                <img src="php/images/'.$img.'" alt="Profile Image" class="image">
+                            </div>
+                        ';
+                    }
+                    if($types[$i] == "pdf"){
+                        $chatr .= '
+                            <div class="chat incomming pdf-in">
+                                <p class="message pdf">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                    <b>PDF</b>
+                                    <input type="hidden" value="'.$con->str_openssl_dec($ch1[$i].$ch2[$i], hex2bin($init[$i])).'">
+                                </p>
+                                <img src="php/images/'.$img.'" alt="Profile Image" class="image">
+                            </div>
+                        ';
+                    }
                 }
             }
             echo json_encode(array("data" => $chatr, "status" => $status));

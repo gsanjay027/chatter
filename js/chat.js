@@ -5,7 +5,23 @@ const sendMsg_btn = document.querySelector(".message-box #sendMsg .submit");
 const sendMsg_inp = document.querySelector(".message-box #sendMsg .message");
 
 const image = document.querySelector(".message-box .images");
+const pdf = document.querySelector(".message-box .pdfType");
+
+
+document.body.addEventListener('click', function (e) {
+    if (e.target.classList.contains('pdf')) {
+        var pdfFile = e.target.querySelector('input[type="hidden"]');
+        if (pdfFile) {
+            window.open(pdfFile.value, '_blank');
+        }
+    }
+});
+
 var scrollingDiv = document.getElementById('chat-lister');
+
+pdf.onchange = () => {
+  uploadFile();
+}
 
 image.onchange = () => {
   uploadImage();
@@ -19,7 +35,6 @@ var scrollDirection = 1;
 function autoScroll() {
   scrollingDiv.scrollTop += scrollSpeed * scrollDirection;
 }
-
 
 setInterval( () => {
   let xhr = new XMLHttpRequest();
@@ -74,8 +89,8 @@ sendMsg_inp.onkeyup = () => {
 
 function uploadImage() {
     var fileInput = document.getElementById('fileInput');
-    var imageContainer = document.getElementById('imageContainer');
-    var uploadedImage = document.getElementById('uploadedImage');
+    // var imageContainer = document.getElementById('imageContainer');
+    // var uploadedImage = document.getElementById('uploadedImage');
 
     var file = fileInput.files[0];
     if (file) {
@@ -85,24 +100,57 @@ function uploadImage() {
 
             storeImageInDatabase(base64Image);
             
-            uploadedImage.src = base64Image;
-            imageContainer.style.display = 'block';
+            // uploadedImage.src = base64Image;
+            // imageContainer.style.display = 'block';
         };
         reader.readAsDataURL(file);
     }
 }
 
 function storeImageInDatabase(base64Image) {
-    // Use AJAX to send the base64Image to a PHP script for database storage
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'storeImage.php', true);
+    xhr.open('POST', 'php/insertChat.php', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
             console.log(xhr.responseText);
         }
     };
-    xhr.send('image=' + encodeURIComponent(base64Image));
+    xhr.send('image=' + encodeURIComponent(base64Image) + "&incommingid=" + incomming_id);
+}
+
+function uploadFile() {
+  var fileInput = document.getElementById('pdfInput');
+
+  var file = fileInput.files[0];
+  if (file) {
+      // var reader = new FileReader();
+      // reader.onload = function (e) {
+      //     var base64File = e.target.result;
+
+          storeFileInDatabase(file);
+      // };
+      // reader.readAsDataURL(file);
+
+  }
+}
+
+function storeFileInDatabase(file) {
+  var xhr = new XMLHttpRequest();
+  var formData = new FormData();
+
+  formData.append('pdf', file);
+  formData.append('incommingid', incomming_id);
+
+  xhr.open('POST', 'php/insertChat.php', true);
+
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+          console.log(xhr.responseText);
+      }
+  };
+
+  xhr.send(formData);
 }
 
 function viewImage() {
