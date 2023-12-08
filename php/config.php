@@ -64,10 +64,11 @@
         {
             $unique_id = $this->esc_str(rand(time(), 1000000000));
             $hash_pass = $this->esc_str(password_hash($pass, PASSWORD_BCRYPT));
+            $ukey = bin2hex(openssl_random_pseudo_bytes(16));
 
-            $qry = "INSERT INTO `users` (unique_id, fname, lname, email, pass, img) VALUES (?, ?, ?, ?, ?, ?)";
+            $qry = "INSERT INTO `users` (unique_id, fname, lname, email, pass, img, unique_key) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->con->prepare($qry);
-            $stmt->bind_param("ssssss", $unique_id, $fname, $lname, $email, $hash_pass, $img);
+            $stmt->bind_param("sssssss", $unique_id, $fname, $lname, $email, $hash_pass, $img, $ukey);
             $stmt->execute();
 
             $numrows = $stmt->affected_rows;
